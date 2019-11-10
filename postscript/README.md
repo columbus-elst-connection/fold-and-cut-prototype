@@ -10,4 +10,11 @@
 
 Here we will use it to print out the results of our algorithms.
 
+## Viewing results
+One way of viewing the results is sending it to a printer. An other is to use
+[`ghostscript`][ghostscript]: 
+
+> An interpreter for the PostScript language and for PDF.
+
 [postcript]: https://www.adobe.com/products/postscript.html
+[ghostscript]: https://www.ghostscript.com/
