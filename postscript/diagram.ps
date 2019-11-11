@@ -27,7 +27,6 @@
     [/points] dup length dict begin
     {exch def} forall
     points length 2 ge { % There need to be at least two points to form a chain
-        newpath
         points 0 get aload pop moveto
         points 1 points length 1 sub getinterval {
             aload pop lineto
@@ -73,12 +72,14 @@ end
 /square_size page_width 2 border_size mul sub def
 border_size page_height square_size sub 2 div translate
 
-square_size 1000 div dup scale % Use normalized coordinates. [0 0] is bottom left [1000 1000] is top righf
+square_size 1000 div dup scale % Use normalized coordinates. [0 0] is bottom left [1000 1000] is top right
 
 %%EndPageSetup
 
-[(open)   [100 100] [900 100] [900 900] [100 900]] subfigure stroke
-[(closed) [200 200] [800 200] [800 800] [200 800]] subfigure stroke
+newpath
+[(open)   [100 100] [900 100] [900 900] [100 900]] subfigure
+[(closed) [200 200] [800 200] [800 800] [200 800]] subfigure
+stroke
 
 0 0 1000 square stroke
 
