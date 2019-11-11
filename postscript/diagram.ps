@@ -23,8 +23,22 @@
     end
 } def
 
+/chain { % [[x_0, y_0], [x_1, y_1], ..., [x_n-1, y_n-1]]
+    [/points] dup length dict begin
+    {exch def} forall
+    points length 2 ge { % There need to be at least two points to form a chain
+        newpath
+        points 0 get aload pop moveto
+        points 1 points length 1 sub getinterval {
+            aload pop lineto
+        } forall
+    } if
+    end
+} def
+
 %%EndProlog
 %%BeginSetup
+
 72 25.4 div dup scale % use millimeters as unit
 
 %%EndSetup
@@ -35,10 +49,13 @@
 /square_size page_width 2 border_size mul sub def
 border_size page_height square_size sub 2 div translate
 
+square_size 1000 div dup scale % Use normalized coordinates. [0 0] is bottom left [1000 1000] is top righf
+
 %%EndPageSetup
 
-0 0 square_size square
-stroke
+[[100 100] [900 100] [900 900] [100 900]] chain stroke
+
+0 0 1000 square stroke
 
 showpage
 
