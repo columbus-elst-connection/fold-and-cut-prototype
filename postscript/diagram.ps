@@ -6,19 +6,36 @@
 %%EndComments
 %%BeginProlog
 
+/page_width 210 def % width of A4 paper in millimeters
+/page_height 297 def % height of A4 paper in millimeters
+
+/square {
+    /size exch def
+    /y exch def
+    /x exch def
+    newpath
+    x y moveto
+    size 0 rlineto
+    0 size rlineto
+    size neg 0 rlineto
+    closepath
+} def
+
 %%EndProlog
 %%BeginSetup
-72 25.4 div dup scale
+72 25.4 div dup scale % use millimeters as unit
 
 %%EndSetup
 %%Page: first 1
 %%BeginPageSetup
 
+/border_size 10 def
+/square_size page_width 2 border_size mul sub def
+border_size page_height square_size sub 2 div translate
+
 %%EndPageSetup
 
-newpath
-0 0 moveto
-210 297 lineto
+0 0 square_size square
 stroke
 
 showpage
