@@ -12,6 +12,7 @@
 /page_height 297 def % height of A4 paper in millimeters
 
 /square {
+    3 dict begin
     /size exch def
     /y exch def
     /x exch def
@@ -21,6 +22,7 @@
     0 size rlineto
     size neg 0 rlineto
     closepath
+    end
 } def
 
 %%EndProlog
