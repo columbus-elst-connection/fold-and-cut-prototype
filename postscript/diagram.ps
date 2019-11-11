@@ -12,10 +12,8 @@
 /page_height 297 def % height of A4 paper in millimeters
 
 /square {
-    3 dict begin
-    /size exch def
-    /y exch def
-    /x exch def
+    [/size /y /x] dup length dict begin
+    {exch def} forall
     newpath
     x y moveto
     size 0 rlineto
