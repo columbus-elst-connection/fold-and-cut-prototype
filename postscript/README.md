@@ -34,5 +34,5 @@ amounts to
 ghostscript -sDEVICE=x11 -dBATCH -q diagram.ps
 ```
 
-[postcript]: https://www.adobe.com/products/postscript.html
+[postscript]: https://www.adobe.com/products/postscript.html
 [ghostscript]: https://www.ghostscript.com/
