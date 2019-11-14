@@ -6,4 +6,4 @@ Over at the [postscript][] directory we created a handmade PostScript file which
 
 ![handmade diagram](https://columbus-elst-connection.github.io/fold-and-cut-prototype/diagram.png)
 
-[postscrip]: https://github.com/columbus-elst-connection/fold-and-cut-prototype/tree/master/postscript
+[postscript]: https://github.com/columbus-elst-connection/fold-and-cut-prototype/tree/master/postscript
