@@ -1,5 +1,5 @@
 use std::fmt::{self, Display, Formatter};
-use crate::Figure;
+use crate::figure::Figure;
 
 pub struct Document<T> {
     figure: Figure<T>,    

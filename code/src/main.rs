@@ -1,6 +1,6 @@
 extern crate prototype;
 
-use prototype::{closed, compose, open, Point};
+use prototype::figure::{closed, compose, open, Point};
 use prototype::postscript::Document;
 
 fn main() {
