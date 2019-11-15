@@ -1,6 +1,7 @@
 extern crate prototype;
 
 use prototype::{closed, compose, open, Point};
+use prototype::postscript::Document;
 
 fn main() {
     let figure = compose(vec![
@@ -18,5 +19,7 @@ fn main() {
         ]),
     ]);
 
-    println!("{}", figure);
+    let document = Document::with(figure);
+
+    println!("{}", document);
 }

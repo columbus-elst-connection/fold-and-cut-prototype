@@ -1,3 +1,5 @@
+pub mod postscript;
+
 use std::fmt::{self, Display, Formatter};
 
 pub enum Figure<T> {
