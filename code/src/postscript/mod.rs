@@ -1,5 +1,5 @@
-use std::io::{Write, Error};
 use crate::figure::Figure;
+use std::io::{Error, Write};
 
 pub struct Document<T> {
     figure: Figure<T>,
@@ -39,7 +39,7 @@ where
             Figure::Open(points) => {
                 w.write(b"(open)")?;
                 points.to_postscript(w)?;
-           }
+            }
             Figure::Closed(points) => {
                 w.write(b"(closed)")?;
                 points.to_postscript(w)?;
@@ -47,7 +47,7 @@ where
             Figure::Composed(figures) => {
                 w.write(b"(compose)")?;
                 figures.to_postscript(w)?;
-           }
+            }
         }
         w.write(b"]").map(|_| ())
     }
@@ -64,7 +64,6 @@ where
         }
         w.write(b"]").map(|_| ())
     }
-
 }
 
 impl PostScript for u16 {

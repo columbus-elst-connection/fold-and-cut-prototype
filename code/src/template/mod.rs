@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::fmt::{self, Write};
+use std::io::{self, Write};
 use std::ops::Range;
 use std::str::FromStr;
 
@@ -16,7 +16,7 @@ pub struct Template {
 }
 
 impl Template {
-    pub fn render(&self, writer: &mut dyn Write, data: &Data) -> Result<(), fmt::Error> {
+    pub fn render(&self, writer: &mut dyn Write, data: &Data) -> Result<(), io::Error> {
         self.compositor.compose(writer, data)
     }
 }
@@ -42,18 +42,20 @@ impl Compositor {
         Ok(Self { input, chunks })
     }
 
-    fn compose(&self, writer: &mut dyn Write, data: &Data) -> Result<(), fmt::Error> {
+    fn compose(&self, writer: &mut dyn Write, data: &Data) -> Result<(), io::Error> {
         for chunk in self.chunks.iter() {
             match chunk {
-                Chunk::Literal(window) => writer.write_str(&self.input[window.range()])?,
+                Chunk::Literal(window) => {
+                    writer.write_all(&self.input[window.range()].as_bytes())?
+                }
                 Chunk::Variable(window) => {
                     let key = &self.input[window.range()].to_owned();
                     if let Some(value) = data.get(key) {
-                        writer.write_str(value)?;
+                        writer.write_all(value.as_bytes())?;
                     } else {
-                        writer.write_str("{{")?;
-                        writer.write_str(key)?;
-                        writer.write_str("}}")?;
+                        writer.write_all(b"{{")?;
+                        writer.write_all(key.as_bytes())?;
+                        writer.write_all(b"}}")?;
                     }
                 }
             }
@@ -188,11 +190,12 @@ mod test {
         let template = compile("Hello, World!").expect("template to compile");
         let data = Data::from(HashMap::new());
 
-        let mut result = String::new();
+        let mut result = Vec::new();
         template
             .render(&mut result, &data)
             .expect("template to render");
 
+        let result = String::from_utf8(result).expect("utf8 string");
         assert_eq!(result, "Hello, World!")
     }
 
@@ -203,11 +206,12 @@ mod test {
         data.insert("subject".to_owned(), "World".to_owned());
         let data = Data::from(data);
 
-        let mut result = String::new();
+        let mut result = Vec::new();
         template
             .render(&mut result, &data)
             .expect("template to render");
 
+        let result = String::from_utf8(result).expect("utf8 string");
         assert_eq!(result, "Hello, World!")
     }
 
@@ -219,11 +223,12 @@ mod test {
         data.insert("subject".to_owned(), "World".to_owned());
         let data = Data::from(data);
 
-        let mut result = String::new();
+        let mut result = Vec::new();
         template
             .render(&mut result, &data)
             .expect("template to render");
 
+        let result = String::from_utf8(result).expect("utf8 string");
         assert_eq!(result, "Hello, World!")
     }
 }

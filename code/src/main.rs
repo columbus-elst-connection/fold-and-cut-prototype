@@ -1,9 +1,8 @@
 extern crate prototype;
 
-use std::io;
 use prototype::figure::{closed, compose, open, Point};
 use prototype::postscript::{Document, PostScript};
-
+use std::io;
 
 fn main() -> Result<(), io::Error> {
     let figure = compose(vec![
