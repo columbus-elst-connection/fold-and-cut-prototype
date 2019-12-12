@@ -1,9 +1,11 @@
 extern crate prototype;
 
+use std::io;
 use prototype::figure::{closed, compose, open, Point};
-use prototype::postscript::Document;
+use prototype::postscript::{Document, PostScript};
 
-fn main() {
+
+fn main() -> Result<(), io::Error> {
     let figure = compose(vec![
         open(vec![
             Point::from([100u16, 100]),
@@ -21,5 +23,6 @@ fn main() {
 
     let document = Document::with(figure);
 
-    println!("{}", document);
+    let mut out = io::stdout();
+    document.to_postscript(&mut out)
 }

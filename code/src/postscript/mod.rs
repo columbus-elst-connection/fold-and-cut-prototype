@@ -1,5 +1,5 @@
+use std::io::{self, Write, Error};
 use crate::figure::Figure;
-use std::fmt::{self, Display, Formatter};
 
 pub struct Document<T> {
     figure: Figure<T>,
@@ -16,11 +16,51 @@ impl<T> Document<T> {
     }
 }
 
-impl<T> Display for Document<T>
+pub trait PostScript {
+    fn to_postscript(&self, w: &mut Write) -> Result<(), Error>;
+}
+
+impl<T> PostScript for Document<T>
 where
-    T: Display,
+    T: PostScript,
 {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", self.figure)
+    fn to_postscript(&self, w: &mut Write) -> Result<(), Error> {
+        self.figure.to_postscript(w)
+    }
+}
+
+impl<T> PostScript for Figure<T>
+where
+    T: PostScript,
+{
+    fn to_postscript(&self, w: &mut Write) -> Result<(), Error> {
+        w.write(b"[")?;
+        match self {
+            Figure::Open(points) => {
+                w.write(b"(open)")?;
+                for point in points {
+                    point.to_postscript(w)?
+                }
+            }
+            Figure::Closed(points) => {
+                w.write(b"(closed)")?;
+                for point in points {
+                    point.to_postscript(w)?
+                }
+            }
+            Figure::Composed(figures) => {
+                w.write(b"(compose)")?;
+                for figure in figures {
+                    figure.to_postscript(w)?
+                }
+            }
+        }
+        w.write(b"]").map(|_| ())
+    }
+}
+
+impl PostScript for u16 {
+    fn to_postscript(&self, w: &mut Write) -> Result<(), Error> {
+        w.write_fmt(format_args!("{}", self))
     }
 }

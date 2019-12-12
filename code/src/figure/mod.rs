@@ -1,40 +1,5 @@
-use std::fmt::{self, Display, Formatter};
-
-pub enum Figure<T> {
-    Open(Vec<Point<T>>),
-    Closed(Vec<Point<T>>),
-    Composed(Vec<Figure<T>>),
-}
-
-impl<T> Display for Figure<T>
-where
-    T: Display,
-{
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "[")?;
-        match self {
-            Figure::Open(points) => {
-                write!(f, "(open)")?;
-                for point in points {
-                    write!(f, " {}", point)?;
-                }
-            }
-            Figure::Closed(points) => {
-                write!(f, "(closed)")?;
-                for point in points {
-                    write!(f, " {}", point)?;
-                }
-            }
-            Figure::Composed(figures) => {
-                write!(f, "(compose)")?;
-                for figure in figures {
-                    write!(f, " {}", figure)?;
-                }
-            }
-        }
-        write!(f, "]")
-    }
-}
+use crate::postscript::PostScript;
+use std::io::{self, Write};
 
 pub fn open<T>(points: Vec<Point<T>>) -> Figure<T> {
     Figure::Open(points)
@@ -46,6 +11,12 @@ pub fn closed<T>(points: Vec<Point<T>>) -> Figure<T> {
 
 pub fn compose<T>(points: Vec<Figure<T>>) -> Figure<T> {
     Figure::Composed(points)
+}
+
+pub enum Figure<T> {
+    Open(Vec<Point<T>>),
+    Closed(Vec<Point<T>>),
+    Composed(Vec<Figure<T>>),
 }
 
 #[derive(Debug, PartialEq)]
@@ -61,12 +32,16 @@ impl<T> From<[T; 2]> for Point<T> {
     }
 }
 
-impl<T> Display for Point<T>
+impl<T> PostScript for Point<T>
 where
-    T: Display,
+    T: PostScript,
 {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "[{} {}]", self.x, self.y)
+    fn to_postscript(&self, w: &mut Write) -> Result<(), io::Error> {
+        w.write(b"[")?;
+        self.x.to_postscript(w)?;
+        w.write(b" ")?;
+        self.y.to_postscript(w)?;
+        w.write(b"]").map(|_| ())
     }
 }
 
