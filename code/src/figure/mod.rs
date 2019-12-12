@@ -36,7 +36,7 @@ impl<T> PostScript for Point<T>
 where
     T: PostScript,
 {
-    fn to_postscript(&self, w: &mut Write) -> Result<(), io::Error> {
+    fn to_postscript(&self, w: &mut dyn Write) -> Result<(), io::Error> {
         w.write(b"[")?;
         self.x.to_postscript(w)?;
         w.write(b" ")?;
