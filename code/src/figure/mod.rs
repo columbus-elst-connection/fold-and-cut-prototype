@@ -1,5 +1,5 @@
-use crate::postscript::PostScript;
-use std::io::{self, Write};
+use crate::postscript::{self, PostScript};
+use std::io::Write;
 
 pub fn open<T>(points: Vec<Point<T>>) -> Figure<T> {
     Figure::Open(points)
@@ -36,12 +36,13 @@ impl<T> PostScript for Point<T>
 where
     T: PostScript,
 {
-    fn to_postscript(&self, w: &mut dyn Write) -> Result<(), io::Error> {
-        w.write(b"[")?;
+    fn to_postscript(&self, w: &mut dyn Write) -> Result<(), postscript::Error> {
+        w.write_all(b"[")?;
         self.x.to_postscript(w)?;
-        w.write(b" ")?;
+        w.write_all(b" ")?;
         self.y.to_postscript(w)?;
-        w.write(b"]").map(|_| ())
+        w.write_all(b"]")?;
+        Ok(())
     }
 }
 
