@@ -41,7 +41,7 @@ type alias Point a =
 
 empty : Model
 empty =
-    { width = 1024, height = 1024, figure = [] }
+    { width = 512, height = 512, figure = [] }
 
 
 addPoint : ( Int, Int ) -> Model -> Model
@@ -64,7 +64,7 @@ view model =
     in
     Canvas.toHtml ( model.width, model.height )
         [ style "border" "1px solid black" ]
-        [ Canvas.shapes [ Setting.fill Color.white ] [ rect ( 0, 0 ) width height ]
+        [ Canvas.shapes [ Setting.fill Color.lightGrey] [ rect ( 0, 0 ) width height ]
         , renderFigure model.figure
         ]
 

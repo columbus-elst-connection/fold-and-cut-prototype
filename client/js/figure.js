@@ -5145,7 +5145,7 @@ var $author$project$Figure$addPoint = F2(
 			model,
 			{D: figure});
 	});
-var $author$project$Figure$empty = {D: _List_Nil, J: 1024, K: 1024};
+var $author$project$Figure$empty = {D: _List_Nil, J: 512, K: 512};
 var $author$project$Figure$init = A2(
 	$author$project$Figure$addPoint,
 	_Utils_Tuple2(200, 50),
@@ -5177,6 +5177,11 @@ var $joakin$elm_canvas$Canvas$Settings$fill = function (color) {
 	return $joakin$elm_canvas$Canvas$Internal$Canvas$SettingDrawOp(
 		$joakin$elm_canvas$Canvas$Internal$Canvas$Fill(color));
 };
+var $avh4$elm_color$Color$RgbaSpace = F4(
+	function (a, b, c, d) {
+		return {$: 0, a: a, b: b, c: c, d: d};
+	});
+var $avh4$elm_color$Color$lightGrey = A4($avh4$elm_color$Color$RgbaSpace, 238 / 255, 238 / 255, 236 / 255, 1.0);
 var $joakin$elm_canvas$Canvas$Internal$Canvas$Rect = F3(
 	function (a, b, c) {
 		return {$: 0, a: a, b: b, c: c};
@@ -5217,10 +5222,6 @@ var $joakin$elm_canvas$Canvas$Internal$Canvas$Path = F2(
 var $joakin$elm_canvas$Canvas$path = F2(
 	function (startingPoint, segments) {
 		return A2($joakin$elm_canvas$Canvas$Internal$Canvas$Path, startingPoint, segments);
-	});
-var $avh4$elm_color$Color$RgbaSpace = F4(
-	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
 	});
 var $avh4$elm_color$Color$rgba = F4(
 	function (r, g, b, a) {
@@ -6136,7 +6137,6 @@ var $joakin$elm_canvas$Canvas$toHtml = F3(
 			attrs,
 			entities);
 	});
-var $avh4$elm_color$Color$white = A4($avh4$elm_color$Color$RgbaSpace, 255 / 255, 255 / 255, 255 / 255, 1.0);
 var $author$project$Figure$view = function (model) {
 	var width = model.K;
 	var height = model.J;
@@ -6153,7 +6153,7 @@ var $author$project$Figure$view = function (model) {
 				$joakin$elm_canvas$Canvas$shapes,
 				_List_fromArray(
 					[
-						$joakin$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$white)
+						$joakin$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$lightGrey)
 					]),
 				_List_fromArray(
 					[
