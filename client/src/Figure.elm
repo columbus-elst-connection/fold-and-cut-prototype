@@ -3,14 +3,14 @@ module Figure exposing (..)
 -- elm install avh4/elm-color
 
 import Browser
-import Canvas exposing (..)
-import Canvas.Settings exposing (..)
+import Canvas exposing (Renderable, lineTo, path, rect)
+import Canvas.Settings as Setting
 import Color
 import Html exposing (Html)
 import Html.Attributes exposing (style)
 
 
-main : Program () () msg
+main : Program () Model msg
 main =
     Browser.element
         { init = \_ -> ( init, Cmd.none )
@@ -19,34 +19,95 @@ main =
         , subscriptions = subscriptions
         }
 
-init =
-    ()
 
-view : model -> Html msg
-view _ =
+init : Model
+init =
+    empty
+        |> addPoint ( 0, 0 )
+        |> addPoint ( 100, 100 )
+        |> addPoint ( 200, 50 )
+
+
+type alias Model =
+    { width : Int
+    , height : Int
+    , figure : List (Point Int)
+    }
+
+
+type alias Point a =
+    ( a, a )
+
+
+empty : Model
+empty =
+    { width = 1024, height = 1024, figure = [] }
+
+
+addPoint : ( Int, Int ) -> Model -> Model
+addPoint point model =
+    let
+        figure =
+            point :: model.figure
+    in
+    { model | figure = figure }
+
+
+view : Model -> Html msg
+view model =
     let
         width =
-            500
+            toFloat model.width
 
         height =
-            300
+            toFloat model.height
     in
-    Canvas.toHtml ( width, height )
+    Canvas.toHtml ( model.width, model.height )
         [ style "border" "1px solid black" ]
-        [ shapes [ fill Color.white ] [ rect ( 0, 0 ) width height ]
-        , renderSquare
+        [ Canvas.shapes [ Setting.fill Color.white ] [ rect ( 0, 0 ) width height ]
+        , renderFigure model.figure
         ]
 
 
-renderSquare =
-    shapes [ fill (Color.rgba 0 0 0 1) ]
-        [ rect ( 0, 0 ) 100 50 ]
+renderFigure : List (Point Int) -> Renderable
+renderFigure points =
+    let
+        canvasPoints =
+            points
+                |> List.map toCanvasPoint
+
+        toCanvasPoint : Point Int -> Point Float
+        toCanvasPoint ( x, y ) =
+            ( toFloat x, toFloat y )
+
+        start =
+            canvasPoints
+                |> List.head
+
+        segments =
+            canvasPoints
+                |> List.tail
+                |> Maybe.map (List.map lineTo)
+                |> Maybe.withDefault []
+
+        shape =
+            start
+                |> Maybe.map (\s -> path s segments)
+
+        shapes =
+            shape
+                |> Maybe.map (\s -> [ s ])
+                |> Maybe.withDefault []
+    in
+    Canvas.shapes [ Setting.stroke (Color.rgba 0 0 0 1) ]
+        shapes
 
 
-update : msg -> model -> ( model, Cmd msg )
+update : msg -> Model -> ( Model, Cmd msg )
 update _ m =
-    (m, Cmd.none)
+    ( m, Cmd.none )
 
-subscriptions : model -> Sub msg
+
+subscriptions : Model -> Sub msg
 subscriptions model =
     Sub.none
