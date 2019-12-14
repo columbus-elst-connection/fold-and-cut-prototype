@@ -600,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.Z.E === region.ah.E)
+	if (region.ab.F === region.ak.F)
 	{
-		return 'on line ' + region.Z.E;
+		return 'on line ' + region.ab.F;
 	}
-	return 'on lines ' + region.Z.E + ' through ' + region.ah.E;
+	return 'on lines ' + region.ab.F + ' through ' + region.ak.F;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bb,
-		impl.bF,
-		impl.bz,
+		impl.bd,
+		impl.bG,
+		impl.bA,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		p: func(record.p),
-		_: record._,
-		W: record.W
+		ac: record.ac,
+		Z: record.Z
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value._;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ac;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.W) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.Z) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bb,
-		impl.bF,
-		impl.bz,
+		impl.bd,
+		impl.bG,
+		impl.bA,
 		function(sendToApp, initialModel) {
-			var view = impl.bG;
+			var view = impl.bH;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bb,
-		impl.bF,
-		impl.bz,
+		impl.bd,
+		impl.bG,
+		impl.bA,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.Y && impl.Y(sendToApp)
-			var view = impl.bG;
+			var divertHrefToApp = impl.aa && impl.aa(sendToApp)
+			var view = impl.bH;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aQ);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aT);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bD) && (_VirtualDom_doc.title = title = doc.bD);
+				(title !== doc.bE) && (_VirtualDom_doc.title = title = doc.bE);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bm;
-	var onUrlRequest = impl.bn;
+	var onUrlChange = impl.bo;
+	var onUrlRequest = impl.bp;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		Y: function(sendToApp)
+		aa: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aB === next.aB
-							&& curr.ak === next.ak
-							&& curr.ay.a === next.ay.a
+							&& curr.aE === next.aE
+							&& curr.an === next.an
+							&& curr.aB.a === next.aB.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		bb: function(flags)
+		bd: function(flags)
 		{
-			return A3(impl.bb, flags, _Browser_getUrl(), key);
+			return A3(impl.bd, flags, _Browser_getUrl(), key);
 		},
+		bH: impl.bH,
 		bG: impl.bG,
-		bF: impl.bF,
-		bz: impl.bz
+		bA: impl.bA
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { a8: 'hidden', aS: 'visibilitychange' }
+		? { ba: 'hidden', aV: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { a8: 'mozHidden', aS: 'mozvisibilitychange' }
+		? { ba: 'mozHidden', aV: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { a8: 'msHidden', aS: 'msvisibilitychange' }
+		? { ba: 'msHidden', aV: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { a8: 'webkitHidden', aS: 'webkitvisibilitychange' }
-		: { a8: 'hidden', aS: 'visibilitychange' };
+		? { ba: 'webkitHidden', aV: 'webkitvisibilitychange' }
+		: { ba: 'hidden', aV: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aG: _Browser_getScene(),
-		aK: {
-			aL: _Browser_window.pageXOffset,
-			aM: _Browser_window.pageYOffset,
-			P: _Browser_doc.documentElement.clientWidth,
-			K: _Browser_doc.documentElement.clientHeight
+		aJ: _Browser_getScene(),
+		aN: {
+			aO: _Browser_window.pageXOffset,
+			aP: _Browser_window.pageYOffset,
+			Q: _Browser_doc.documentElement.clientWidth,
+			L: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		P: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		K: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		Q: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		L: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aG: {
-				P: node.scrollWidth,
-				K: node.scrollHeight
+			aJ: {
+				Q: node.scrollWidth,
+				L: node.scrollHeight
 			},
-			aK: {
-				aL: node.scrollLeft,
-				aM: node.scrollTop,
-				P: node.clientWidth,
-				K: node.clientHeight
+			aN: {
+				aO: node.scrollLeft,
+				aP: node.scrollTop,
+				Q: node.clientWidth,
+				L: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aG: _Browser_getScene(),
-			aK: {
-				aL: x,
-				aM: y,
-				P: _Browser_doc.documentElement.clientWidth,
-				K: _Browser_doc.documentElement.clientHeight
+			aJ: _Browser_getScene(),
+			aN: {
+				aO: x,
+				aP: y,
+				Q: _Browser_doc.documentElement.clientWidth,
+				L: _Browser_doc.documentElement.clientHeight
 			},
-			a2: {
-				aL: x + rect.left,
-				aM: y + rect.top,
-				P: rect.width,
-				K: rect.height
+			a4: {
+				aO: x + rect.left,
+				aP: y + rect.top,
+				Q: rect.width,
+				L: rect.height
 			}
 		};
 	});
@@ -4859,7 +4859,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {aj: fragment, ak: host, av: path, ay: port_, aB: protocol, aC: query};
+		return {am: fragment, an: host, ay: path, aB: port_, aE: protocol, aF: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5138,7 +5138,7 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Figure$empty = {D: _List_Nil, K: 512, P: 512};
+var $author$project$Figure$empty = {s: $elm$core$Maybe$Nothing, E: _List_Nil, L: 512, Q: 512};
 var $author$project$Figure$init = $author$project$Figure$empty;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5149,28 +5149,82 @@ var $author$project$Figure$subscriptions = function (model) {
 };
 var $author$project$Figure$addPoint = F2(
 	function (point, model) {
-		var figure = A2($elm$core$List$cons, point, model.D);
+		var figure = A2($elm$core$List$cons, point, model.E);
 		return _Utils_update(
 			model,
-			{D: figure});
+			{E: figure});
+	});
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
 	});
 var $elm$core$Basics$round = _Basics_round;
+var $author$project$Figure$toFigurePoint = function (_v0) {
+	var x = _v0.a;
+	var y = _v0.b;
+	return _Utils_Tuple2(
+		$elm$core$Basics$round(x),
+		$elm$core$Basics$round(y));
+};
 var $author$project$Figure$update = F2(
 	function (message, model) {
-		var event = message;
-		var toFigurePoint = function (_v1) {
-			var x = _v1.a;
-			var y = _v1.b;
-			return _Utils_Tuple2(
-				$elm$core$Basics$round(x),
-				$elm$core$Basics$round(y));
-		};
-		var point = toFigurePoint(event.bq.aU);
-		return _Utils_Tuple2(
-			A2($author$project$Figure$addPoint, point, model),
-			$elm$core$Platform$Cmd$none);
+		switch (message.$) {
+			case 0:
+				var event = message.a;
+				var point = $author$project$Figure$toFigurePoint(event.Y.S);
+				return _Utils_Tuple2(
+					A2($author$project$Figure$addPoint, point, model),
+					$elm$core$Platform$Cmd$none);
+			case 1:
+				var event = message.a;
+				var point = event.Y.S;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							s: $elm$core$Maybe$Just(point)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 2:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{s: $elm$core$Maybe$Nothing}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				var event = message.a;
+				var point = event.Y.S;
+				var current = A2(
+					$elm$core$Maybe$map,
+					function (_v1) {
+						return point;
+					},
+					model.s);
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{s: current}),
+					$elm$core$Platform$Cmd$none);
+		}
 	});
-var $author$project$Figure$AddPoint = $elm$core$Basics$identity;
+var $author$project$Figure$AddPoint = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Figure$Move = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Figure$Subscribe = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Figure$Unsubscribe = function (a) {
+	return {$: 2, a: a};
+};
 var $joakin$elm_canvas$Canvas$Internal$Canvas$Fill = function (a) {
 	return {$: 1, a: a};
 };
@@ -5186,7 +5240,7 @@ var $avh4$elm_color$Color$RgbaSpace = F4(
 		return {$: 0, a: a, b: b, c: c, d: d};
 	});
 var $avh4$elm_color$Color$lightGrey = A4($avh4$elm_color$Color$RgbaSpace, 238 / 255, 238 / 255, 236 / 255, 1.0);
-var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions = {W: true, _: false};
+var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions = {Z: true, ac: false};
 var $elm$virtual_dom$VirtualDom$Custom = function (a) {
 	return {$: 3, a: a};
 };
@@ -5200,12 +5254,12 @@ var $elm$html$Html$Events$custom = F2(
 	});
 var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$Event = F5(
 	function (pointerType, pointer, pointerId, isPrimary, contactDetails) {
-		return {aW: contactDetails, bc: isPrimary, bq: pointer, br: pointerId, bs: pointerType};
+		return {aY: contactDetails, be: isPrimary, Y: pointer, bs: pointerId, bt: pointerType};
 	});
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$ContactDetails = F5(
 	function (width, height, pressure, tiltX, tiltY) {
-		return {K: height, bt: pressure, bB: tiltX, bC: tiltY, P: width};
+		return {L: height, bu: pressure, bC: tiltX, bD: tiltY, Q: width};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
@@ -5220,7 +5274,7 @@ var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$contactDetailsDecod
 	A2($elm$json$Json$Decode$field, 'tiltY', $elm$json$Json$Decode$float));
 var $mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$Event = F6(
 	function (keys, button, clientPos, offsetPos, pagePos, screenPos) {
-		return {aR: button, aU: clientPos, be: keys, bl: offsetPos, bp: pagePos, bv: screenPos};
+		return {aU: button, S: clientPos, bg: keys, bn: offsetPos, br: pagePos, bw: screenPos};
 	});
 var $mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$BackButton = 4;
 var $mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$ErrorButton = 0;
@@ -5259,7 +5313,7 @@ var $mpizenberg$elm_pointer_events$Internal$Decode$clientPos = A3(
 	A2($elm$json$Json$Decode$field, 'clientY', $elm$json$Json$Decode$float));
 var $mpizenberg$elm_pointer_events$Internal$Decode$Keys = F3(
 	function (alt, ctrl, shift) {
-		return {aO: alt, aX: ctrl, bw: shift};
+		return {aR: alt, aZ: ctrl, bx: shift};
 	});
 var $elm$json$Json$Decode$map3 = _Json_map3;
 var $mpizenberg$elm_pointer_events$Internal$Decode$keys = A4(
@@ -5327,13 +5381,16 @@ var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions = F3(
 				function (ev) {
 					return {
 						p: tag(ev),
-						W: options.W,
-						_: options._
+						Z: options.Z,
+						ac: options.ac
 					};
 				},
 				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$eventDecoder));
 	});
 var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onDown = A2($mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions, 'pointerdown', $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions);
+var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onEnter = A2($mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions, 'pointerenter', $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions);
+var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onLeave = A2($mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions, 'pointerleave', $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions);
+var $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onMove = A2($mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions, 'pointermove', $mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions);
 var $joakin$elm_canvas$Canvas$Internal$Canvas$Rect = F3(
 	function (a, b, c) {
 		return {$: 0, a: a, b: b, c: c};
@@ -5342,42 +5399,14 @@ var $joakin$elm_canvas$Canvas$rect = F3(
 	function (pos, width, height) {
 		return A3($joakin$elm_canvas$Canvas$Internal$Canvas$Rect, pos, width, height);
 	});
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
-var $joakin$elm_canvas$Canvas$Internal$Canvas$LineTo = function (a) {
-	return {$: 2, a: a};
-};
-var $joakin$elm_canvas$Canvas$lineTo = function (point) {
-	return $joakin$elm_canvas$Canvas$Internal$Canvas$LineTo(point);
-};
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $joakin$elm_canvas$Canvas$Internal$Canvas$Path = F2(
+var $avh4$elm_color$Color$blue = A4($avh4$elm_color$Color$RgbaSpace, 52 / 255, 101 / 255, 164 / 255, 1.0);
+var $joakin$elm_canvas$Canvas$Internal$Canvas$Circle = F2(
 	function (a, b) {
-		return {$: 2, a: a, b: b};
+		return {$: 1, a: a, b: b};
 	});
-var $joakin$elm_canvas$Canvas$path = F2(
-	function (startingPoint, segments) {
-		return A2($joakin$elm_canvas$Canvas$Internal$Canvas$Path, startingPoint, segments);
-	});
-var $avh4$elm_color$Color$rgba = F4(
-	function (r, g, b, a) {
-		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
+var $joakin$elm_canvas$Canvas$circle = F2(
+	function (pos, radius) {
+		return A2($joakin$elm_canvas$Canvas$Internal$Canvas$Circle, pos, radius);
 	});
 var $joakin$elm_canvas$Canvas$Internal$Canvas$DrawableShapes = function (a) {
 	return {$: 1, a: a};
@@ -5477,14 +5506,14 @@ var $joakin$elm_canvas$Canvas$addSettingsToRenderable = F2(
 						return _Utils_update(
 							r,
 							{
-								y: f(r.y)
+								z: f(r.z)
 							});
 					default:
 						var op = setting.a;
 						return _Utils_update(
 							r,
 							{
-								x: A2($joakin$elm_canvas$Canvas$mergeDrawOp, r.x, op)
+								y: A2($joakin$elm_canvas$Canvas$mergeDrawOp, r.y, op)
 							});
 				}
 			});
@@ -5497,22 +5526,13 @@ var $joakin$elm_canvas$Canvas$shapes = F2(
 			settings,
 			{
 				o: _List_Nil,
-				x: $joakin$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
-				y: $joakin$elm_canvas$Canvas$Internal$Canvas$DrawableShapes(ss)
+				y: $joakin$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
+				z: $joakin$elm_canvas$Canvas$Internal$Canvas$DrawableShapes(ss)
 			});
 	});
 var $joakin$elm_canvas$Canvas$Settings$stroke = function (color) {
 	return $joakin$elm_canvas$Canvas$Internal$Canvas$SettingDrawOp(
 		$joakin$elm_canvas$Canvas$Internal$Canvas$Stroke(color));
-};
-var $elm$core$List$tail = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(xs);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
 };
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
@@ -5523,6 +5543,64 @@ var $elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
+var $author$project$Figure$renderCrossHair = function (point) {
+	var shapes = A2(
+		$elm$core$Maybe$withDefault,
+		_List_Nil,
+		A2(
+			$elm$core$Maybe$map,
+			function (c) {
+				return _List_fromArray(
+					[
+						A2($joakin$elm_canvas$Canvas$circle, c, 10.0)
+					]);
+			},
+			point));
+	var radius = 5.0;
+	return A2(
+		$joakin$elm_canvas$Canvas$shapes,
+		_List_fromArray(
+			[
+				$joakin$elm_canvas$Canvas$Settings$stroke($avh4$elm_color$Color$blue)
+			]),
+		shapes);
+};
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $joakin$elm_canvas$Canvas$Internal$Canvas$LineTo = function (a) {
+	return {$: 2, a: a};
+};
+var $joakin$elm_canvas$Canvas$lineTo = function (point) {
+	return $joakin$elm_canvas$Canvas$Internal$Canvas$LineTo(point);
+};
+var $joakin$elm_canvas$Canvas$Internal$Canvas$Path = F2(
+	function (a, b) {
+		return {$: 2, a: a, b: b};
+	});
+var $joakin$elm_canvas$Canvas$path = F2(
+	function (startingPoint, segments) {
+		return A2($joakin$elm_canvas$Canvas$Internal$Canvas$Path, startingPoint, segments);
+	});
+var $avh4$elm_color$Color$rgba = F4(
+	function (r, g, b, a) {
+		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
+	});
+var $elm$core$List$tail = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(xs);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
 var $author$project$Figure$renderFigure = function (points) {
 	var toCanvasPoint = function (_v0) {
 		var x = _v0.a;
@@ -6004,7 +6082,7 @@ var $joakin$elm_canvas$Canvas$renderTextFill = F5(
 	function (txt, x, y, color, cmds) {
 		return A2(
 			$elm$core$List$cons,
-			A4($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$fillText, txt.aa, x, y, txt.T),
+			A4($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$fillText, txt.ad, x, y, txt.V),
 			A2(
 				$elm$core$List$cons,
 				$joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$fillStyle(color),
@@ -6040,7 +6118,7 @@ var $joakin$elm_canvas$Canvas$renderTextStroke = F5(
 	function (txt, x, y, color, cmds) {
 		return A2(
 			$elm$core$List$cons,
-			A4($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$strokeText, txt.aa, x, y, txt.T),
+			A4($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$strokeText, txt.ad, x, y, txt.V),
 			A2(
 				$elm$core$List$cons,
 				$joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$strokeStyle(color),
@@ -6048,7 +6126,7 @@ var $joakin$elm_canvas$Canvas$renderTextStroke = F5(
 	});
 var $joakin$elm_canvas$Canvas$renderTextDrawOp = F3(
 	function (drawOp, txt, cmds) {
-		var _v0 = txt.ax;
+		var _v0 = txt.aA;
 		var x = _v0.a;
 		var y = _v0.b;
 		switch (drawOp.$) {
@@ -6101,11 +6179,11 @@ var $joakin$elm_canvas$Canvas$Internal$Texture$drawTexture = F4(
 			function () {
 				if (!t.$) {
 					var image = t.a;
-					return A9($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$drawImage, 0, 0, image.P, image.K, x, y, image.P, image.K, image.bd);
+					return A9($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$drawImage, 0, 0, image.Q, image.L, x, y, image.Q, image.L, image.bf);
 				} else {
 					var sprite = t.a;
 					var image = t.b;
-					return A9($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$drawImage, sprite.aL, sprite.aM, sprite.P, sprite.K, x, y, sprite.P, sprite.K, image.bd);
+					return A9($joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$drawImage, sprite.aO, sprite.aP, sprite.Q, sprite.L, x, y, sprite.Q, sprite.L, image.bf);
 				}
 			}(),
 			cmds);
@@ -6144,8 +6222,8 @@ var $joakin$elm_canvas$Canvas$renderOne = F2(
 	function (_v0, cmds) {
 		var data = _v0;
 		var commands = data.o;
-		var drawable = data.y;
-		var drawOp = data.x;
+		var drawable = data.z;
+		var drawOp = data.y;
 		return A2(
 			$elm$core$List$cons,
 			$joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$restore,
@@ -6181,7 +6259,7 @@ var $joakin$elm_canvas$Canvas$decodeTextureImageInfo = A2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (width, height) {
-					return {K: height, bd: target, P: width};
+					return {L: height, bf: target, Q: width};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -6265,15 +6343,15 @@ var $joakin$elm_canvas$Canvas$toHtmlWith = F3(
 					$joakin$elm_canvas$Canvas$render(entities)),
 				A2(
 					$elm$core$List$cons,
-					$elm$html$Html$Attributes$height(options.K),
+					$elm$html$Html$Attributes$height(options.L),
 					A2(
 						$elm$core$List$cons,
-						$elm$html$Html$Attributes$width(options.P),
+						$elm$html$Html$Attributes$width(options.Q),
 						attrs))),
 			A2(
 				$elm$core$List$cons,
 				_Utils_Tuple2('__canvas', $joakin$elm_canvas$Canvas$cnvs),
-				A2($elm$core$List$map, $joakin$elm_canvas$Canvas$renderTextureSource, options.aJ)));
+				A2($elm$core$List$map, $joakin$elm_canvas$Canvas$renderTextureSource, options.aM)));
 	});
 var $joakin$elm_canvas$Canvas$toHtml = F3(
 	function (_v0, attrs, entities) {
@@ -6281,20 +6359,23 @@ var $joakin$elm_canvas$Canvas$toHtml = F3(
 		var h = _v0.b;
 		return A3(
 			$joakin$elm_canvas$Canvas$toHtmlWith,
-			{K: h, aJ: _List_Nil, P: w},
+			{L: h, aM: _List_Nil, Q: w},
 			attrs,
 			entities);
 	});
 var $author$project$Figure$view = function (model) {
-	var width = model.P;
-	var height = model.K;
+	var width = model.Q;
+	var height = model.L;
 	return A3(
 		$joakin$elm_canvas$Canvas$toHtml,
-		_Utils_Tuple2(model.P, model.K),
+		_Utils_Tuple2(model.Q, model.L),
 		_List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$style, 'border', '1px solid black'),
-				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onDown($elm$core$Basics$identity)
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onDown($author$project$Figure$AddPoint),
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onEnter($author$project$Figure$Subscribe),
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onLeave($author$project$Figure$Unsubscribe),
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onMove($author$project$Figure$Move)
 			]),
 		_List_fromArray(
 			[
@@ -6312,17 +6393,18 @@ var $author$project$Figure$view = function (model) {
 						width,
 						height)
 					])),
-				$author$project$Figure$renderFigure(model.D)
+				$author$project$Figure$renderFigure(model.E),
+				$author$project$Figure$renderCrossHair(model.s)
 			]));
 };
 var $author$project$Figure$main = $elm$browser$Browser$element(
 	{
-		bb: function (_v0) {
+		bd: function (_v0) {
 			return _Utils_Tuple2($author$project$Figure$init, $elm$core$Platform$Cmd$none);
 		},
-		bz: $author$project$Figure$subscriptions,
-		bF: $author$project$Figure$update,
-		bG: $author$project$Figure$view
+		bA: $author$project$Figure$subscriptions,
+		bG: $author$project$Figure$update,
+		bH: $author$project$Figure$view
 	});
 _Platform_export({'Figure':{'init':$author$project$Figure$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

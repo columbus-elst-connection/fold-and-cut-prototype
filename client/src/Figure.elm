@@ -3,7 +3,7 @@ module Figure exposing (..)
 -- elm install avh4/elm-color
 
 import Browser
-import Canvas exposing (Renderable, lineTo, path, rect)
+import Canvas exposing (Renderable, circle, lineTo, path, rect)
 import Canvas.Settings as Setting
 import Color
 import Html exposing (Html)
@@ -29,6 +29,7 @@ init =
 type alias Model =
     { width : Int
     , height : Int
+    , current : Maybe (Point Float)
     , figure : List (Point Int)
     }
 
@@ -39,7 +40,7 @@ type alias Point a =
 
 empty : Model
 empty =
-    { width = 512, height = 512, figure = [] }
+    { width = 512, height = 512, current = Nothing, figure = [] }
 
 
 addPoint : ( Int, Int ) -> Model -> Model
@@ -63,9 +64,13 @@ view model =
     Canvas.toHtml ( model.width, model.height )
         [ style "border" "1px solid black"
         , Pointer.onDown AddPoint
+        , Pointer.onEnter Subscribe
+        , Pointer.onLeave Unsubscribe
+        , Pointer.onMove Move
         ]
         [ Canvas.shapes [ Setting.fill Color.lightGrey ] [ rect ( 0, 0 ) width height ]
         , renderFigure model.figure
+        , renderCrossHair model.current
         ]
 
 
@@ -103,8 +108,26 @@ renderFigure points =
         shapes
 
 
+renderCrossHair : Maybe (Point Float) -> Renderable
+renderCrossHair point =
+    let
+        radius =
+            5.0
+
+        shapes =
+            point
+                |> Maybe.map (\c -> [ circle c 10.0 ])
+                |> Maybe.withDefault []
+    in
+    Canvas.shapes [ Setting.stroke <| Color.blue ]
+        shapes
+
+
 type Message
     = AddPoint Pointer.Event
+    | Subscribe Pointer.Event
+    | Unsubscribe Pointer.Event
+    | Move Pointer.Event
 
 
 update : Message -> Model -> ( Model, Cmd Message )
@@ -116,12 +139,36 @@ update message model =
                     event.pointer
                         |> .clientPos
                         |> toFigurePoint
-
-                toFigurePoint : Point Float -> Point Int
-                toFigurePoint ( x, y ) =
-                    ( round x, round y )
             in
             ( model |> addPoint point, Cmd.none )
+
+        Subscribe event ->
+            let
+                point =
+                    event.pointer
+                        |> .clientPos
+            in
+            ( { model | current = Just point }, Cmd.none )
+
+        Unsubscribe _ ->
+            ( { model | current = Nothing }, Cmd.none )
+
+        Move event ->
+            let
+                point =
+                    event.pointer
+                        |> .clientPos
+
+                current =
+                    model.current
+                        |> Maybe.map (\_ -> point)
+            in
+            ( { model | current = current }, Cmd.none )
+
+
+toFigurePoint : Point Float -> Point Int
+toFigurePoint ( x, y ) =
+    ( round x, round y )
 
 
 subscriptions : Model -> Sub Message
