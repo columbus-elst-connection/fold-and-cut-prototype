@@ -8,9 +8,10 @@ import Canvas.Settings as Setting
 import Color
 import Html exposing (Html)
 import Html.Attributes exposing (style)
+import Html.Events.Extra.Pointer as Pointer
 
 
-main : Program () Model msg
+main : Program () Model Message
 main =
     Browser.element
         { init = \_ -> ( init, Cmd.none )
@@ -23,9 +24,6 @@ main =
 init : Model
 init =
     empty
-        |> addPoint ( 0, 0 )
-        |> addPoint ( 100, 100 )
-        |> addPoint ( 200, 50 )
 
 
 type alias Model =
@@ -53,7 +51,7 @@ addPoint point model =
     { model | figure = figure }
 
 
-view : Model -> Html msg
+view : Model -> Html Message
 view model =
     let
         width =
@@ -63,8 +61,10 @@ view model =
             toFloat model.height
     in
     Canvas.toHtml ( model.width, model.height )
-        [ style "border" "1px solid black" ]
-        [ Canvas.shapes [ Setting.fill Color.lightGrey] [ rect ( 0, 0 ) width height ]
+        [ style "border" "1px solid black"
+        , Pointer.onDown AddPoint
+        ]
+        [ Canvas.shapes [ Setting.fill Color.lightGrey ] [ rect ( 0, 0 ) width height ]
         , renderFigure model.figure
         ]
 
@@ -103,11 +103,27 @@ renderFigure points =
         shapes
 
 
-update : msg -> Model -> ( Model, Cmd msg )
-update _ m =
-    ( m, Cmd.none )
+type Message
+    = AddPoint Pointer.Event
 
 
-subscriptions : Model -> Sub msg
+update : Message -> Model -> ( Model, Cmd Message )
+update message model =
+    case message of
+        AddPoint event ->
+            let
+                point =
+                    event.pointer
+                        |> .clientPos
+                        |> toFigurePoint
+
+                toFigurePoint : Point Float -> Point Int
+                toFigurePoint ( x, y ) =
+                    ( round x, round y )
+            in
+            ( model |> addPoint point, Cmd.none )
+
+
+subscriptions : Model -> Sub Message
 subscriptions model =
     Sub.none
