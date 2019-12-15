@@ -5138,7 +5138,7 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Figure$empty = {l: _List_Nil, t: $elm$core$Maybe$Nothing, F: _List_Nil, M: 512, S: 512};
+var $author$project$Figure$empty = {g: _List_Nil, t: $elm$core$Maybe$Nothing, u: _List_Nil, M: 512, S: 512};
 var $author$project$Figure$init = $author$project$Figure$empty;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5158,15 +5158,15 @@ var $author$project$Figure$addFigure = F2(
 		return _Utils_update(
 			model,
 			{
-				F: A2($elm$core$List$cons, figure, model.F)
+				u: A2($elm$core$List$cons, figure, model.u)
 			});
 	});
 var $author$project$Figure$addPoint = F2(
 	function (point, model) {
-		var currentFigure = A2($elm$core$List$cons, point, model.l);
+		var currentFigure = A2($elm$core$List$cons, point, model.g);
 		return _Utils_update(
 			model,
-			{l: currentFigure});
+			{g: currentFigure});
 	});
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
@@ -5178,6 +5178,15 @@ var $elm$core$Maybe$map = F2(
 			return $elm$core$Maybe$Nothing;
 		}
 	});
+var $author$project$Figure$points = function (figure) {
+	if (!figure.$) {
+		var ps = figure.a;
+		return ps;
+	} else {
+		var ps = figure.a;
+		return ps;
+	}
+};
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Figure$toFigurePoint = function (_v0) {
 	var x = _v0.a;
@@ -5195,25 +5204,54 @@ var $author$project$Figure$update = F2(
 				var keys = event.R.bh;
 				var _v1 = _Utils_Tuple2(keys.by, keys.a_);
 				if (_v1.a) {
-					var figure = $author$project$Figure$Open(
-						A2($elm$core$List$cons, point, model.l));
-					var nextModel = A2(
-						$author$project$Figure$addFigure,
-						figure,
-						_Utils_update(
-							model,
-							{l: _List_Nil}));
-					return _Utils_Tuple2(nextModel, $elm$core$Platform$Cmd$none);
-				} else {
 					if (_v1.b) {
-						var figure = $author$project$Figure$Closed(
-							A2($elm$core$List$cons, point, model.l));
+						var _v2 = model.g;
+						if (_v2.b) {
+							var p = _v2.a;
+							var ps = _v2.b;
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{g: ps}),
+								$elm$core$Platform$Cmd$none);
+						} else {
+							var _v3 = model.u;
+							if (_v3.b) {
+								var f = _v3.a;
+								var fs = _v3.b;
+								return _Utils_Tuple2(
+									_Utils_update(
+										model,
+										{
+											g: $author$project$Figure$points(f),
+											u: fs
+										}),
+									$elm$core$Platform$Cmd$none);
+							} else {
+								return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+							}
+						}
+					} else {
+						var figure = $author$project$Figure$Open(
+							A2($elm$core$List$cons, point, model.g));
 						var nextModel = A2(
 							$author$project$Figure$addFigure,
 							figure,
 							_Utils_update(
 								model,
-								{l: _List_Nil}));
+								{g: _List_Nil}));
+						return _Utils_Tuple2(nextModel, $elm$core$Platform$Cmd$none);
+					}
+				} else {
+					if (_v1.b) {
+						var figure = $author$project$Figure$Closed(
+							A2($elm$core$List$cons, point, model.g));
+						var nextModel = A2(
+							$author$project$Figure$addFigure,
+							figure,
+							_Utils_update(
+								model,
+								{g: _List_Nil}));
 						return _Utils_Tuple2(nextModel, $elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(
@@ -5242,7 +5280,7 @@ var $author$project$Figure$update = F2(
 				var point = event.R.U;
 				var currentPoint = A2(
 					$elm$core$Maybe$map,
-					function (_v2) {
+					function (_v4) {
 						return point;
 					},
 					model.t);
@@ -5546,14 +5584,14 @@ var $joakin$elm_canvas$Canvas$addSettingsToRenderable = F2(
 						return _Utils_update(
 							r,
 							{
-								A: f(r.A)
+								B: f(r.B)
 							});
 					default:
 						var op = setting.a;
 						return _Utils_update(
 							r,
 							{
-								z: A2($joakin$elm_canvas$Canvas$mergeDrawOp, r.z, op)
+								A: A2($joakin$elm_canvas$Canvas$mergeDrawOp, r.A, op)
 							});
 				}
 			});
@@ -5566,8 +5604,8 @@ var $joakin$elm_canvas$Canvas$shapes = F2(
 			settings,
 			{
 				p: _List_Nil,
-				z: $joakin$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
-				A: $joakin$elm_canvas$Canvas$Internal$Canvas$DrawableShapes(ss)
+				A: $joakin$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
+				B: $joakin$elm_canvas$Canvas$Internal$Canvas$DrawableShapes(ss)
 			});
 	});
 var $joakin$elm_canvas$Canvas$Settings$stroke = function (color) {
@@ -5664,13 +5702,13 @@ var $elm$core$List$tail = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
-var $author$project$Figure$renderPoints = function (points) {
+var $author$project$Figure$renderPoints = function (ps) {
 	var toCanvasPoint = function (_v0) {
 		var x = _v0.a;
 		var y = _v0.b;
 		return _Utils_Tuple2(x, y);
 	};
-	var canvasPoints = A2($elm$core$List$map, toCanvasPoint, points);
+	var canvasPoints = A2($elm$core$List$map, toCanvasPoint, ps);
 	var segments = A2(
 		$elm$core$Maybe$withDefault,
 		_List_Nil,
@@ -5688,7 +5726,7 @@ var $author$project$Figure$renderPoints = function (points) {
 };
 var $author$project$Figure$renderShape = function (figure) {
 	if (!figure.$) {
-		var points = figure.a;
+		var ps = figure.a;
 		return A2(
 			$elm$core$Maybe$withDefault,
 			_List_Nil,
@@ -5698,9 +5736,9 @@ var $author$project$Figure$renderShape = function (figure) {
 					return _List_fromArray(
 						[s]);
 				},
-				$author$project$Figure$renderPoints(points)));
+				$author$project$Figure$renderPoints(ps)));
 	} else {
-		var points = figure.a;
+		var ps = figure.a;
 		return A2(
 			$elm$core$Maybe$withDefault,
 			_List_Nil,
@@ -5711,7 +5749,7 @@ var $author$project$Figure$renderShape = function (figure) {
 						[s]);
 				},
 				$author$project$Figure$renderPoints(
-					$author$project$Figure$close(points))));
+					$author$project$Figure$close(ps))));
 	}
 };
 var $author$project$Figure$renderShapes = $elm$core$List$concatMap($author$project$Figure$renderShape);
@@ -6311,8 +6349,8 @@ var $joakin$elm_canvas$Canvas$renderOne = F2(
 	function (_v0, cmds) {
 		var data = _v0;
 		var commands = data.p;
-		var drawable = data.A;
-		var drawOp = data.z;
+		var drawable = data.B;
+		var drawOp = data.A;
 		return A2(
 			$elm$core$List$cons,
 			$joakin$elm_canvas$Canvas$Internal$CustomElementJsonApi$restore,
@@ -6482,11 +6520,11 @@ var $author$project$Figure$view = function (model) {
 						width,
 						height)
 					])),
-				$author$project$Figure$renderFigure(model.F),
+				$author$project$Figure$renderFigure(model.u),
 				$author$project$Figure$renderFigure(
 				_List_fromArray(
 					[
-						$author$project$Figure$Open(model.l)
+						$author$project$Figure$Open(model.g)
 					])),
 				$author$project$Figure$renderCrossHair(model.t)
 			]));

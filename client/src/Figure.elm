@@ -38,6 +38,16 @@ type Figure
     | Closed (List (Point Int))
 
 
+points : Figure -> List (Point Int)
+points figure =
+    case figure of
+        Open ps ->
+            ps
+
+        Closed ps ->
+            ps
+
+
 type alias Point a =
     ( a, a )
 
@@ -102,14 +112,14 @@ renderShapes =
 renderShape : Figure -> List Shape
 renderShape figure =
     case figure of
-        Open points ->
-            points
+        Open ps ->
+            ps
                 |> renderPoints
                 |> Maybe.map (\s -> [ s ])
                 |> Maybe.withDefault []
 
-        Closed points ->
-            points
+        Closed ps ->
+            ps
                 |> close
                 |> renderPoints
                 |> Maybe.map (\s -> [ s ])
@@ -127,10 +137,10 @@ close z =
 
 
 renderPoints : List (Point Int) -> Maybe Shape
-renderPoints points =
+renderPoints ps =
     let
         canvasPoints =
-            points
+            ps
                 |> List.map toCanvasPoint
 
         toCanvasPoint : Point Int -> Point Float
@@ -190,6 +200,19 @@ update message model =
                         |> .keys
             in
             case ( keys.shift, keys.ctrl ) of
+                ( True, True ) ->
+                    case model.currentFigure of
+                        p :: ps ->
+                            ( { model | currentFigure = ps }, Cmd.none )
+
+                        [] ->
+                            case model.figure of
+                                f :: fs ->
+                                    ( { model | currentFigure = points f, figure = fs }, Cmd.none )
+
+                                [] ->
+                                    ( model, Cmd.none )
+
                 ( True, _ ) ->
                     let
                         figure =
