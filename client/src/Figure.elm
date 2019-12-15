@@ -29,8 +29,8 @@ init =
 type alias Model =
     { width : Int
     , height : Int
-    , current : Maybe (Point Float)
-    , figure : List (Point Int)
+    , currentPoint : Maybe (Point Float)
+    , currentFigure : List (Point Int)
     }
 
 
@@ -40,16 +40,16 @@ type alias Point a =
 
 empty : Model
 empty =
-    { width = 512, height = 512, current = Nothing, figure = [] }
+    { width = 512, height = 512, currentPoint = Nothing, currentFigure = [] }
 
 
 addPoint : ( Int, Int ) -> Model -> Model
 addPoint point model =
     let
-        figure =
-            point :: model.figure
+        currentFigure =
+            point :: model.currentFigure
     in
-    { model | figure = figure }
+    { model | currentFigure = currentFigure }
 
 
 view : Model -> Html Message
@@ -69,8 +69,8 @@ view model =
         , Pointer.onMove Move
         ]
         [ Canvas.shapes [ Setting.fill Color.lightGrey ] [ rect ( 0, 0 ) width height ]
-        , renderFigure model.figure
-        , renderCrossHair model.current
+        , renderFigure model.currentFigure
+        , renderCrossHair model.currentPoint
         ]
 
 
@@ -148,10 +148,10 @@ update message model =
                     event.pointer
                         |> .clientPos
             in
-            ( { model | current = Just point }, Cmd.none )
+            ( { model | currentPoint = Just point }, Cmd.none )
 
         Unsubscribe _ ->
-            ( { model | current = Nothing }, Cmd.none )
+            ( { model | currentPoint = Nothing }, Cmd.none )
 
         Move event ->
             let
@@ -159,11 +159,11 @@ update message model =
                     event.pointer
                         |> .clientPos
 
-                current =
-                    model.current
+                currentPoint =
+                    model.currentPoint
                         |> Maybe.map (\_ -> point)
             in
-            ( { model | current = current }, Cmd.none )
+            ( { model | currentPoint = currentPoint }, Cmd.none )
 
 
 toFigurePoint : Point Float -> Point Int

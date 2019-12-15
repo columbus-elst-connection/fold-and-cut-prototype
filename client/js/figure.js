@@ -5138,7 +5138,7 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Figure$empty = {s: $elm$core$Maybe$Nothing, E: _List_Nil, L: 512, Q: 512};
+var $author$project$Figure$empty = {E: _List_Nil, s: $elm$core$Maybe$Nothing, L: 512, Q: 512};
 var $author$project$Figure$init = $author$project$Figure$empty;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5149,10 +5149,10 @@ var $author$project$Figure$subscriptions = function (model) {
 };
 var $author$project$Figure$addPoint = F2(
 	function (point, model) {
-		var figure = A2($elm$core$List$cons, point, model.E);
+		var currentFigure = A2($elm$core$List$cons, point, model.E);
 		return _Utils_update(
 			model,
-			{E: figure});
+			{E: currentFigure});
 	});
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
@@ -5200,7 +5200,7 @@ var $author$project$Figure$update = F2(
 			default:
 				var event = message.a;
 				var point = event.Y.S;
-				var current = A2(
+				var currentPoint = A2(
 					$elm$core$Maybe$map,
 					function (_v1) {
 						return point;
@@ -5209,7 +5209,7 @@ var $author$project$Figure$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{s: current}),
+						{s: currentPoint}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
