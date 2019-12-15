@@ -3,7 +3,7 @@ module Figure exposing (..)
 -- elm install avh4/elm-color
 
 import Browser
-import Canvas exposing (Renderable, circle, lineTo, path, rect)
+import Canvas exposing (Renderable, Shape, circle, lineTo, path, rect)
 import Canvas.Settings as Setting
 import Color
 import Html exposing (Html)
@@ -31,7 +31,14 @@ type alias Model =
     , height : Int
     , currentPoint : Maybe (Point Float)
     , currentFigure : List (Point Int)
+    , figure : Figure
     }
+
+
+type Figure
+    = Open (List (Point Int))
+    | Closed (List (Point Int))
+    | Composed (List Figure)
 
 
 type alias Point a =
@@ -40,7 +47,7 @@ type alias Point a =
 
 empty : Model
 empty =
-    { width = 512, height = 512, currentPoint = Nothing, currentFigure = [] }
+    { width = 512, height = 512, currentPoint = Nothing, currentFigure = [], figure = Composed [] }
 
 
 addPoint : ( Int, Int ) -> Model -> Model
@@ -69,13 +76,45 @@ view model =
         , Pointer.onMove Move
         ]
         [ Canvas.shapes [ Setting.fill Color.lightGrey ] [ rect ( 0, 0 ) width height ]
-        , renderFigure model.currentFigure
+        , renderFigure model.figure
+        , renderFigure <| Open model.currentFigure
         , renderCrossHair model.currentPoint
         ]
 
 
-renderFigure : List (Point Int) -> Renderable
-renderFigure points =
+renderFigure : Figure -> Renderable
+renderFigure figure =
+    let
+        shapes =
+            renderShape figure
+    in
+    Canvas.shapes [ Setting.stroke (Color.rgba 0 0 0 1) ]
+        shapes
+
+
+renderShape : Figure -> List Shape
+renderShape figure =
+    case figure of
+        Open points ->
+            points
+                |> renderPoints
+                |> Maybe.map (\s -> [ s ])
+                |> Maybe.withDefault []
+
+        Closed points ->
+            -- TODO close path
+            points
+                |> renderPoints
+                |> Maybe.map (\s -> [ s ])
+                |> Maybe.withDefault []
+
+        Composed figures ->
+            figures
+                |> List.concatMap renderShape
+
+
+renderPoints : List (Point Int) -> Maybe Shape
+renderPoints points =
     let
         canvasPoints =
             points
@@ -94,18 +133,9 @@ renderFigure points =
                 |> List.tail
                 |> Maybe.map (List.map lineTo)
                 |> Maybe.withDefault []
-
-        shape =
-            start
-                |> Maybe.map (\s -> path s segments)
-
-        shapes =
-            shape
-                |> Maybe.map (\s -> [ s ])
-                |> Maybe.withDefault []
     in
-    Canvas.shapes [ Setting.stroke (Color.rgba 0 0 0 1) ]
-        shapes
+    start
+        |> Maybe.map (\s -> path s segments)
 
 
 renderCrossHair : Maybe (Point Float) -> Renderable
