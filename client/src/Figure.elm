@@ -59,6 +59,23 @@ addPoint point model =
     { model | currentFigure = currentFigure }
 
 
+addFigure : Figure -> Model -> Model
+addFigure figure model =
+    let
+        nextFigure =
+            case model.figure of
+                (Open _) as open ->
+                    Composed [ figure, open ]
+
+                (Closed _) as closed ->
+                    Composed [ figure, closed ]
+
+                Composed rest ->
+                    Composed <| figure :: rest
+    in
+    { model | figure = nextFigure }
+
+
 view : Model -> Html Message
 view model =
     let
@@ -166,11 +183,41 @@ update message model =
         AddPoint event ->
             let
                 point =
-                    event.pointer
+                    event
+                        |> .pointer
                         |> .clientPos
                         |> toFigurePoint
+
+                keys =
+                    event
+                        |> .pointer
+                        |> .keys
             in
-            ( model |> addPoint point, Cmd.none )
+            case ( keys.shift, keys.ctrl ) of
+                ( True, _ ) ->
+                    let
+                        figure =
+                            Open <| point :: model.currentFigure
+
+                        nextModel =
+                            { model | currentFigure = [] }
+                                |> addFigure figure
+                    in
+                    ( nextModel, Cmd.none )
+
+                ( _, True ) ->
+                    let
+                        figure =
+                            Closed <| point :: model.currentFigure
+
+                        nextModel =
+                            { model | currentFigure = [] }
+                                |> addFigure figure
+                    in
+                    ( nextModel, Cmd.none )
+
+                _ ->
+                    ( model |> addPoint point, Cmd.none )
 
         Subscribe event ->
             let
