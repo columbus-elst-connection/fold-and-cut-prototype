@@ -5631,6 +5631,17 @@ var $author$project$Figure$renderCrossHair = function (point) {
 			]),
 		shapes);
 };
+var $author$project$Figure$close = function (z) {
+	if (!z.b) {
+		return _List_Nil;
+	} else {
+		var p = z.a;
+		return _Utils_ap(
+			z,
+			_List_fromArray(
+				[p]));
+	}
+};
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -5726,7 +5737,8 @@ var $author$project$Figure$renderShape = function (figure) {
 						return _List_fromArray(
 							[s]);
 					},
-					$author$project$Figure$renderPoints(points)));
+					$author$project$Figure$renderPoints(
+						$author$project$Figure$close(points))));
 		default:
 			var figures = figure.a;
 			return A2($elm$core$List$concatMap, $author$project$Figure$renderShape, figures);

@@ -119,8 +119,8 @@ renderShape figure =
                 |> Maybe.withDefault []
 
         Closed points ->
-            -- TODO close path
             points
+                |> close
                 |> renderPoints
                 |> Maybe.map (\s -> [ s ])
                 |> Maybe.withDefault []
@@ -128,6 +128,16 @@ renderShape figure =
         Composed figures ->
             figures
                 |> List.concatMap renderShape
+
+
+close : List a -> List a
+close z =
+    case z of
+        [] ->
+            []
+
+        p :: _ ->
+            z ++ [ p ]
 
 
 renderPoints : List (Point Int) -> Maybe Shape
