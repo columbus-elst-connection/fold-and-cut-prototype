@@ -5138,16 +5138,7 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Figure$Composed = function (a) {
-	return {$: 2, a: a};
-};
-var $author$project$Figure$empty = {
-	l: _List_Nil,
-	t: $elm$core$Maybe$Nothing,
-	F: $author$project$Figure$Composed(_List_Nil),
-	M: 512,
-	S: 512
-};
+var $author$project$Figure$empty = {l: _List_Nil, t: $elm$core$Maybe$Nothing, F: _List_Nil, M: 512, S: 512};
 var $author$project$Figure$init = $author$project$Figure$empty;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5164,28 +5155,11 @@ var $author$project$Figure$Open = function (a) {
 };
 var $author$project$Figure$addFigure = F2(
 	function (figure, model) {
-		var nextFigure = function () {
-			var _v0 = model.F;
-			switch (_v0.$) {
-				case 0:
-					var open = _v0;
-					return $author$project$Figure$Composed(
-						_List_fromArray(
-							[figure, open]));
-				case 1:
-					var closed = _v0;
-					return $author$project$Figure$Composed(
-						_List_fromArray(
-							[figure, closed]));
-				default:
-					var rest = _v0.a;
-					return $author$project$Figure$Composed(
-						A2($elm$core$List$cons, figure, rest));
-			}
-		}();
 		return _Utils_update(
 			model,
-			{F: nextFigure});
+			{
+				F: A2($elm$core$List$cons, figure, model.F)
+			});
 	});
 var $author$project$Figure$addPoint = F2(
 	function (point, model) {
@@ -5631,17 +5605,6 @@ var $author$project$Figure$renderCrossHair = function (point) {
 			]),
 		shapes);
 };
-var $author$project$Figure$close = function (z) {
-	if (!z.b) {
-		return _List_Nil;
-	} else {
-		var p = z.a;
-		return _Utils_ap(
-			z,
-			_List_fromArray(
-				[p]));
-	}
-};
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -5658,6 +5621,17 @@ var $elm$core$List$concatMap = F2(
 		return $elm$core$List$concat(
 			A2($elm$core$List$map, f, list));
 	});
+var $author$project$Figure$close = function (z) {
+	if (!z.b) {
+		return _List_Nil;
+	} else {
+		var p = z.a;
+		return _Utils_ap(
+			z,
+			_List_fromArray(
+				[p]));
+	}
+};
 var $elm$core$List$head = function (list) {
 	if (list.b) {
 		var x = list.a;
@@ -5713,43 +5687,40 @@ var $author$project$Figure$renderPoints = function (points) {
 		start);
 };
 var $author$project$Figure$renderShape = function (figure) {
-	switch (figure.$) {
-		case 0:
-			var points = figure.a;
-			return A2(
-				$elm$core$Maybe$withDefault,
-				_List_Nil,
-				A2(
-					$elm$core$Maybe$map,
-					function (s) {
-						return _List_fromArray(
-							[s]);
-					},
-					$author$project$Figure$renderPoints(points)));
-		case 1:
-			var points = figure.a;
-			return A2(
-				$elm$core$Maybe$withDefault,
-				_List_Nil,
-				A2(
-					$elm$core$Maybe$map,
-					function (s) {
-						return _List_fromArray(
-							[s]);
-					},
-					$author$project$Figure$renderPoints(
-						$author$project$Figure$close(points))));
-		default:
-			var figures = figure.a;
-			return A2($elm$core$List$concatMap, $author$project$Figure$renderShape, figures);
+	if (!figure.$) {
+		var points = figure.a;
+		return A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$core$Maybe$map,
+				function (s) {
+					return _List_fromArray(
+						[s]);
+				},
+				$author$project$Figure$renderPoints(points)));
+	} else {
+		var points = figure.a;
+		return A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$core$Maybe$map,
+				function (s) {
+					return _List_fromArray(
+						[s]);
+				},
+				$author$project$Figure$renderPoints(
+					$author$project$Figure$close(points))));
 	}
 };
+var $author$project$Figure$renderShapes = $elm$core$List$concatMap($author$project$Figure$renderShape);
 var $avh4$elm_color$Color$rgba = F4(
 	function (r, g, b, a) {
 		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
 	});
-var $author$project$Figure$renderFigure = function (figure) {
-	var shapes = $author$project$Figure$renderShape(figure);
+var $author$project$Figure$renderFigure = function (figures) {
+	var shapes = $author$project$Figure$renderShapes(figures);
 	return A2(
 		$joakin$elm_canvas$Canvas$shapes,
 		_List_fromArray(
@@ -6513,7 +6484,10 @@ var $author$project$Figure$view = function (model) {
 					])),
 				$author$project$Figure$renderFigure(model.F),
 				$author$project$Figure$renderFigure(
-				$author$project$Figure$Open(model.l)),
+				_List_fromArray(
+					[
+						$author$project$Figure$Open(model.l)
+					])),
 				$author$project$Figure$renderCrossHair(model.t)
 			]));
 };

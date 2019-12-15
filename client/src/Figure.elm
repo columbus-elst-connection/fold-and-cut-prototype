@@ -1,7 +1,5 @@
 module Figure exposing (..)
 
--- elm install avh4/elm-color
-
 import Browser
 import Canvas exposing (Renderable, Shape, circle, lineTo, path, rect)
 import Canvas.Settings as Setting
@@ -31,14 +29,13 @@ type alias Model =
     , height : Int
     , currentPoint : Maybe (Point Float)
     , currentFigure : List (Point Int)
-    , figure : Figure
+    , figure : List Figure
     }
 
 
 type Figure
     = Open (List (Point Int))
     | Closed (List (Point Int))
-    | Composed (List Figure)
 
 
 type alias Point a =
@@ -47,7 +44,7 @@ type alias Point a =
 
 empty : Model
 empty =
-    { width = 512, height = 512, currentPoint = Nothing, currentFigure = [], figure = Composed [] }
+    { width = 512, height = 512, currentPoint = Nothing, currentFigure = [], figure = [] }
 
 
 addPoint : ( Int, Int ) -> Model -> Model
@@ -61,19 +58,7 @@ addPoint point model =
 
 addFigure : Figure -> Model -> Model
 addFigure figure model =
-    let
-        nextFigure =
-            case model.figure of
-                (Open _) as open ->
-                    Composed [ figure, open ]
-
-                (Closed _) as closed ->
-                    Composed [ figure, closed ]
-
-                Composed rest ->
-                    Composed <| figure :: rest
-    in
-    { model | figure = nextFigure }
+    { model | figure = figure :: model.figure }
 
 
 view : Model -> Html Message
@@ -94,19 +79,24 @@ view model =
         ]
         [ Canvas.shapes [ Setting.fill Color.lightGrey ] [ rect ( 0, 0 ) width height ]
         , renderFigure model.figure
-        , renderFigure <| Open model.currentFigure
+        , renderFigure <| [ Open model.currentFigure ]
         , renderCrossHair model.currentPoint
         ]
 
 
-renderFigure : Figure -> Renderable
-renderFigure figure =
+renderFigure : List Figure -> Renderable
+renderFigure figures =
     let
         shapes =
-            renderShape figure
+            renderShapes figures
     in
     Canvas.shapes [ Setting.stroke (Color.rgba 0 0 0 1) ]
         shapes
+
+
+renderShapes : List Figure -> List Shape
+renderShapes =
+    List.concatMap renderShape
 
 
 renderShape : Figure -> List Shape
@@ -124,10 +114,6 @@ renderShape figure =
                 |> renderPoints
                 |> Maybe.map (\s -> [ s ])
                 |> Maybe.withDefault []
-
-        Composed figures ->
-            figures
-                |> List.concatMap renderShape
 
 
 close : List a -> List a
