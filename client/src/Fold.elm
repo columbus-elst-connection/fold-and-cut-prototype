@@ -7,6 +7,7 @@ import Color
 import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Html.Events.Extra.Pointer as Pointer
+import Point exposing (Point)
 
 
 main : Program () Model Message
@@ -46,10 +47,6 @@ points figure =
 
         Closed ps ->
             ps
-
-
-type alias Point a =
-    ( a, a )
 
 
 empty : Model
