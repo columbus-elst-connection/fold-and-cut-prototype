@@ -1,4 +1,4 @@
-module Figure exposing (..)
+module Fold exposing (..)
 
 import Browser
 import Canvas exposing (Renderable, Shape, circle, lineTo, path, rect)

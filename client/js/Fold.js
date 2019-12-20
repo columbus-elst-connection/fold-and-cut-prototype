@@ -5138,22 +5138,22 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Figure$empty = {g: _List_Nil, t: $elm$core$Maybe$Nothing, u: _List_Nil, M: 777, S: 777};
-var $author$project$Figure$init = $author$project$Figure$empty;
+var $author$project$Fold$empty = {g: _List_Nil, t: $elm$core$Maybe$Nothing, u: _List_Nil, M: 777, S: 777};
+var $author$project$Fold$init = $author$project$Fold$empty;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Figure$subscriptions = function (model) {
+var $author$project$Fold$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Figure$Closed = function (a) {
+var $author$project$Fold$Closed = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Figure$Open = function (a) {
+var $author$project$Fold$Open = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Figure$addFigure = F2(
+var $author$project$Fold$addFigure = F2(
 	function (figure, model) {
 		return _Utils_update(
 			model,
@@ -5161,7 +5161,7 @@ var $author$project$Figure$addFigure = F2(
 				u: A2($elm$core$List$cons, figure, model.u)
 			});
 	});
-var $author$project$Figure$addPoint = F2(
+var $author$project$Fold$addPoint = F2(
 	function (point, model) {
 		var currentFigure = A2($elm$core$List$cons, point, model.g);
 		return _Utils_update(
@@ -5178,7 +5178,7 @@ var $elm$core$Maybe$map = F2(
 			return $elm$core$Maybe$Nothing;
 		}
 	});
-var $author$project$Figure$points = function (figure) {
+var $author$project$Fold$points = function (figure) {
 	if (!figure.$) {
 		var ps = figure.a;
 		return ps;
@@ -5188,19 +5188,19 @@ var $author$project$Figure$points = function (figure) {
 	}
 };
 var $elm$core$Basics$round = _Basics_round;
-var $author$project$Figure$toFigurePoint = function (_v0) {
+var $author$project$Fold$toFigurePoint = function (_v0) {
 	var x = _v0.a;
 	var y = _v0.b;
 	return _Utils_Tuple2(
 		$elm$core$Basics$round(x),
 		$elm$core$Basics$round(y));
 };
-var $author$project$Figure$update = F2(
+var $author$project$Fold$update = F2(
 	function (message, model) {
 		switch (message.$) {
 			case 0:
 				var event = message.a;
-				var point = $author$project$Figure$toFigurePoint(event.R.U);
+				var point = $author$project$Fold$toFigurePoint(event.R.U);
 				var keys = event.R.bh;
 				var _v1 = _Utils_Tuple2(keys.by, keys.a_);
 				if (_v1.a) {
@@ -5223,7 +5223,7 @@ var $author$project$Figure$update = F2(
 									_Utils_update(
 										model,
 										{
-											g: $author$project$Figure$points(f),
+											g: $author$project$Fold$points(f),
 											u: fs
 										}),
 									$elm$core$Platform$Cmd$none);
@@ -5232,10 +5232,10 @@ var $author$project$Figure$update = F2(
 							}
 						}
 					} else {
-						var figure = $author$project$Figure$Open(
+						var figure = $author$project$Fold$Open(
 							A2($elm$core$List$cons, point, model.g));
 						var nextModel = A2(
-							$author$project$Figure$addFigure,
+							$author$project$Fold$addFigure,
 							figure,
 							_Utils_update(
 								model,
@@ -5244,10 +5244,10 @@ var $author$project$Figure$update = F2(
 					}
 				} else {
 					if (_v1.b) {
-						var figure = $author$project$Figure$Closed(
+						var figure = $author$project$Fold$Closed(
 							A2($elm$core$List$cons, point, model.g));
 						var nextModel = A2(
-							$author$project$Figure$addFigure,
+							$author$project$Fold$addFigure,
 							figure,
 							_Utils_update(
 								model,
@@ -5255,7 +5255,7 @@ var $author$project$Figure$update = F2(
 						return _Utils_Tuple2(nextModel, $elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(
-							A2($author$project$Figure$addPoint, point, model),
+							A2($author$project$Fold$addPoint, point, model),
 							$elm$core$Platform$Cmd$none);
 					}
 				}
@@ -5291,16 +5291,16 @@ var $author$project$Figure$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$Figure$AddPoint = function (a) {
+var $author$project$Fold$AddPoint = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Figure$Move = function (a) {
+var $author$project$Fold$Move = function (a) {
 	return {$: 3, a: a};
 };
-var $author$project$Figure$Subscribe = function (a) {
+var $author$project$Fold$Subscribe = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Figure$Unsubscribe = function (a) {
+var $author$project$Fold$Unsubscribe = function (a) {
 	return {$: 2, a: a};
 };
 var $joakin$elm_canvas$Canvas$Internal$Canvas$Fill = function (a) {
@@ -5621,7 +5621,7 @@ var $elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
-var $author$project$Figure$renderCrossHair = function (point) {
+var $author$project$Fold$renderCrossHair = function (point) {
 	var shapes = A2(
 		$elm$core$Maybe$withDefault,
 		_List_Nil,
@@ -5659,7 +5659,7 @@ var $elm$core$List$concatMap = F2(
 		return $elm$core$List$concat(
 			A2($elm$core$List$map, f, list));
 	});
-var $author$project$Figure$close = function (z) {
+var $author$project$Fold$close = function (z) {
 	if (!z.b) {
 		return _List_Nil;
 	} else {
@@ -5702,7 +5702,7 @@ var $elm$core$List$tail = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
-var $author$project$Figure$renderPoints = function (ps) {
+var $author$project$Fold$renderPoints = function (ps) {
 	var toCanvasPoint = function (_v0) {
 		var x = _v0.a;
 		var y = _v0.b;
@@ -5724,7 +5724,7 @@ var $author$project$Figure$renderPoints = function (ps) {
 		},
 		start);
 };
-var $author$project$Figure$renderShape = function (figure) {
+var $author$project$Fold$renderShape = function (figure) {
 	if (!figure.$) {
 		var ps = figure.a;
 		return A2(
@@ -5736,7 +5736,7 @@ var $author$project$Figure$renderShape = function (figure) {
 					return _List_fromArray(
 						[s]);
 				},
-				$author$project$Figure$renderPoints(ps)));
+				$author$project$Fold$renderPoints(ps)));
 	} else {
 		var ps = figure.a;
 		return A2(
@@ -5748,17 +5748,17 @@ var $author$project$Figure$renderShape = function (figure) {
 					return _List_fromArray(
 						[s]);
 				},
-				$author$project$Figure$renderPoints(
-					$author$project$Figure$close(ps))));
+				$author$project$Fold$renderPoints(
+					$author$project$Fold$close(ps))));
 	}
 };
-var $author$project$Figure$renderShapes = $elm$core$List$concatMap($author$project$Figure$renderShape);
+var $author$project$Fold$renderShapes = $elm$core$List$concatMap($author$project$Fold$renderShape);
 var $avh4$elm_color$Color$rgba = F4(
 	function (r, g, b, a) {
 		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
 	});
-var $author$project$Figure$renderFigure = function (figures) {
-	var shapes = $author$project$Figure$renderShapes(figures);
+var $author$project$Fold$renderFigure = function (figures) {
+	var shapes = $author$project$Fold$renderShapes(figures);
 	return A2(
 		$joakin$elm_canvas$Canvas$shapes,
 		_List_fromArray(
@@ -6490,7 +6490,7 @@ var $joakin$elm_canvas$Canvas$toHtml = F3(
 			attrs,
 			entities);
 	});
-var $author$project$Figure$view = function (model) {
+var $author$project$Fold$view = function (model) {
 	var width = model.S;
 	var height = model.M;
 	return A3(
@@ -6499,10 +6499,10 @@ var $author$project$Figure$view = function (model) {
 		_List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$style, 'border', '1px solid black'),
-				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onDown($author$project$Figure$AddPoint),
-				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onEnter($author$project$Figure$Subscribe),
-				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onLeave($author$project$Figure$Unsubscribe),
-				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onMove($author$project$Figure$Move)
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onDown($author$project$Fold$AddPoint),
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onEnter($author$project$Fold$Subscribe),
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onLeave($author$project$Fold$Unsubscribe),
+				$mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onMove($author$project$Fold$Move)
 			]),
 		_List_fromArray(
 			[
@@ -6520,23 +6520,23 @@ var $author$project$Figure$view = function (model) {
 						width,
 						height)
 					])),
-				$author$project$Figure$renderFigure(model.u),
-				$author$project$Figure$renderFigure(
+				$author$project$Fold$renderFigure(model.u),
+				$author$project$Fold$renderFigure(
 				_List_fromArray(
 					[
-						$author$project$Figure$Open(model.g)
+						$author$project$Fold$Open(model.g)
 					])),
-				$author$project$Figure$renderCrossHair(model.t)
+				$author$project$Fold$renderCrossHair(model.t)
 			]));
 };
-var $author$project$Figure$main = $elm$browser$Browser$element(
+var $author$project$Fold$main = $elm$browser$Browser$element(
 	{
 		be: function (_v0) {
-			return _Utils_Tuple2($author$project$Figure$init, $elm$core$Platform$Cmd$none);
+			return _Utils_Tuple2($author$project$Fold$init, $elm$core$Platform$Cmd$none);
 		},
-		bB: $author$project$Figure$subscriptions,
-		bH: $author$project$Figure$update,
-		bI: $author$project$Figure$view
+		bB: $author$project$Fold$subscriptions,
+		bH: $author$project$Fold$update,
+		bI: $author$project$Fold$view
 	});
-_Platform_export({'Figure':{'init':$author$project$Figure$main(
+_Platform_export({'Fold':{'init':$author$project$Fold$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
