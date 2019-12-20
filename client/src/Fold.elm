@@ -4,9 +4,11 @@ import Browser
 import Canvas exposing (Renderable, Shape, circle, lineTo, path, rect)
 import Canvas.Settings as Setting
 import Color
+import Figure as F
 import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Html.Events.Extra.Pointer as Pointer
+import Json.Encode as Encode
 import Point exposing (Point)
 
 
@@ -70,6 +72,14 @@ addFigure figure model =
 
 view : Model -> Html Message
 view model =
+    Html.div []
+        [ viewCanvas model
+        , viewJson model
+        ]
+
+
+viewCanvas : Model -> Html Message
+viewCanvas model =
     let
         width =
             toFloat model.width
@@ -171,6 +181,48 @@ renderCrossHair point =
     in
     Canvas.shapes [ Setting.stroke <| Color.blue ]
         shapes
+
+
+viewJson : Model -> Html Message
+viewJson model =
+    let
+        current =
+            model.currentFigure
+                |> Open
+
+        figure =
+            current
+                :: model.figure
+                |> List.map (toFigure model.width model.height)
+                |> F.Composed
+
+        json =
+            figure
+                |> F.encodeFigure
+                |> Encode.encode 2
+    in
+    Html.pre []
+        [ Html.text json
+        ]
+
+
+toFigure : Int -> Int -> Figure -> F.Figure
+toFigure w h figure =
+    let
+        scale : Point Int -> Point Float
+        scale ( x, y ) =
+            ( toFloat x / toFloat w, toFloat y / toFloat h )
+    in
+    case figure of
+        Open ps ->
+            ps
+                |> List.map scale
+                |> F.Open
+
+        Closed ps ->
+            ps
+                |> List.map scale
+                |> F.Closed
 
 
 type Message
