@@ -54,7 +54,7 @@ type alias Point a =
 
 empty : Model
 empty =
-    { width = 512, height = 512, currentPoint = Nothing, currentFigure = [], figure = [] }
+    { width = 777, height = 777, currentPoint = Nothing, currentFigure = [], figure = [] }
 
 
 addPoint : ( Int, Int ) -> Model -> Model

@@ -5138,7 +5138,7 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Figure$empty = {g: _List_Nil, t: $elm$core$Maybe$Nothing, u: _List_Nil, M: 512, S: 512};
+var $author$project$Figure$empty = {g: _List_Nil, t: $elm$core$Maybe$Nothing, u: _List_Nil, M: 777, S: 777};
 var $author$project$Figure$init = $author$project$Figure$empty;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
