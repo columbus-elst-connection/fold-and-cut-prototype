@@ -1,3 +1,3 @@
 (function(){
-    var app = Elm.Figure.init({ node: document.querySelector('main') });
+    var app = Elm.Fold.init({ node: document.querySelector('main') });
 })();
