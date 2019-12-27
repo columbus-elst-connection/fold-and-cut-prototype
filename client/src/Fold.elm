@@ -5,8 +5,10 @@ import Canvas exposing (Renderable, Shape, circle, lineTo, path, rect)
 import Canvas.Settings as Setting
 import Color
 import Figure as F
+import File.Download as Download
 import Html exposing (Html)
 import Html.Attributes exposing (style)
+import Html.Events as Event
 import Html.Events.Extra.Pointer as Pointer
 import Json.Encode as Encode
 import Point exposing (Point)
@@ -74,6 +76,7 @@ view : Model -> Html Message
 view model =
     Html.div []
         [ viewCanvas model
+        , viewDownload model
         , viewJson model
         ]
 
@@ -183,6 +186,29 @@ renderCrossHair point =
         shapes
 
 
+viewDownload : Model -> Html Message
+viewDownload model =
+    Html.button [ Event.onClick Download ] [ Html.text "Download" ]
+
+
+toJson : Model -> String
+toJson model =
+    let
+        current =
+            model.currentFigure
+                |> Open
+
+        figure =
+            current
+                :: model.figure
+                |> List.map (toFigure model.width model.height)
+                |> F.Composed
+    in
+    figure
+        |> F.encodeFigure
+        |> Encode.encode 2
+
+
 viewJson : Model -> Html Message
 viewJson model =
     let
@@ -202,7 +228,7 @@ viewJson model =
                 |> Encode.encode 2
     in
     Html.pre []
-        [ Html.text json
+        [ Html.text <| toJson model
         ]
 
 
@@ -230,6 +256,7 @@ type Message
     | Subscribe Pointer.Event
     | Unsubscribe Pointer.Event
     | Move Pointer.Event
+    | Download
 
 
 update : Message -> Model -> ( Model, Cmd Message )
@@ -309,6 +336,9 @@ update message model =
                         |> Maybe.map (\_ -> point)
             in
             ( { model | currentPoint = currentPoint }, Cmd.none )
+
+        Download ->
+            ( model, Download.string "figure.json" "application/json" <| toJson model )
 
 
 toFigurePoint : Point Float -> Point Int
